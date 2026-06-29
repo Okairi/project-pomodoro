@@ -10,6 +10,8 @@ import {
 import { Header } from "./src/components/Header";
 import { Timer } from "./src/components/Timer";
 
+import { useAudioPlayer } from "expo-audio";
+
 const colores = ["#F7DC6F", "#A2D9CE", "#D7BDE2"];
 
 export default function App() {
@@ -18,6 +20,10 @@ export default function App() {
     if (mode === 1) return 5 * 60;
     return 15 * 60;
   };
+
+  const player = useAudioPlayer(
+    require("./assets/virtualzero-mouse-tap-single-studio-vocal-hd-379364.mp3"),
+  );
 
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -44,17 +50,25 @@ export default function App() {
   }, [isActive]);
 
   const handleStart = () => {
+    playSound();
     setIsActive(true);
   };
 
   const handlePause = () => {
+    playSound();
     setIsActive(false);
   };
 
   const handleReset = () => {
+    playSound();
     setIsActive(false);
 
     setTime(getInitialTime(currentTime));
+  };
+
+  const playSound = async () => {
+    player.seekTo(0);
+    player.play();
   };
 
   return (
